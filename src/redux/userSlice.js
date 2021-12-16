@@ -1,30 +1,23 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const updateUser2 = createAsyncThunk("users/update", async (user) => {
-  const res = await axios.post(
-    "http://aasdfasfaslocalhost:8800/api/users/1/update",
+  const response = await axios.post(
+    "http://adfasdlocalhost:8800/api/users/1/update",
     user
   );
-  return res.data;
-});
-export const deleteUser = createAsyncThunk("users/update", async (user) => {
-  const res = await axios.post(
-    "http://localhost:8800/api/users/1/update",
-    user
-  );
-  return res.data;
+  return response.data;
 });
 
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     userInfo: {
-      name: "Sardor",
-      email: "sardor@mail.ru",
+      name: "john",
+      email: "john@email.com",
     },
     pending: null,
-    error: false,
+    error: null,
   },
   reducers: {},
   extraReducers: {
@@ -33,29 +26,16 @@ export const userSlice = createSlice({
       state.error = false;
     },
     [updateUser2.fulfilled]: (state, action) => {
-      state.pending = false;
       state.userInfo = action.payload;
+      state.pending = false;
     },
     [updateUser2.rejected]: (state) => {
       state.pending = null;
       state.error = true;
     },
   },
-  extraReducers: {
-    [deleteUser.pending]: (state) => {
-      state.pending = true;
-      state.error = false;
-    },
-    [deleteUser.fulfilled]: (state, action) => {
-      state.pending = false;
-      state.userInfo = action.payload;
-    },
-    [deleteUser.rejected]: (state) => {
-      state.pending = false;
-      state.error = true;
-    },
-  },
 });
 
 export const { updateStart, updateSuccess, updateError } = userSlice.actions;
+
 export default userSlice.reducer;
